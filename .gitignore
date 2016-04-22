@@ -1,3 +1,36 @@
-.DS_Store
-/.ipynb_checkpoints
+# Secret
 /twitter.txt
+
+.DS_Store
+*.py[co]
+/.ipynb_checkpoints
+
+# Packages
+*.egg
+*.egg-info
+dist
+build
+eggs
+parts
+bin
+var
+sdist
+develop-eggs
+.installed.cfg
+lib
+lib64
+
+# Installer logs
+pip-log.txt
+
+# Unit test / coverage reports
+.coverage
+.tox
+nosetests.xml
+
+# Eclipse PyDev
+.project
+.pydevproject
+
+# PyCharm
+.idea
