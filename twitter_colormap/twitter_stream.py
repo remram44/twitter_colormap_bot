@@ -5,6 +5,9 @@ import tweepy
 logger = logging.getLogger(__name__)
 
 
+ACTUALLY_POST = False
+
+
 SETTINGS = {}
 execfile('twitter.txt', SETTINGS, SETTINGS)
 
@@ -50,11 +53,19 @@ def status_link(status):
 def post(text, link=None, reply=None):
     if reply:
         text = "@%s %s" % (reply.author.screen_name, text)
-    print()
-    print("WOULD HAVE POSTED:")
-    print(text)
-    if link:
-        print("linking %s" % status_link(link))
-    if reply:
-        print("in reply to %s" % status_link(reply))
-    print()
+    if ACTUALLY_POST:
+        kwargs = {}
+        if link:
+            text = "%s %s" % (text, status_link(link))
+        if reply:
+            kwargs['in_reply_to_status_id'] = reply.id
+        api.update_status(text, **kwargs)
+    else:
+        print()
+        print("WOULD HAVE POSTED:")
+        print(text)
+        if link:
+            print("linking %s" % status_link(link))
+        if reply:
+            print("in reply to %s" % status_link(reply))
+        print()
