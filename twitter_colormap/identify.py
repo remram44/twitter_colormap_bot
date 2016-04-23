@@ -82,6 +82,7 @@ def identify_colormap(image):
     if nb == 1:
         result = [name for name, res in results.iteritems() if res > 0.0][0]
         logger.info("Classified as %s", result)
+        return result
     elif nb > 1:
         logger.warning("Multiple colormaps were identified!")
         return None
