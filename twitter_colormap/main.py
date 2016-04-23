@@ -55,7 +55,7 @@ def handle_status(status, images):
              link=status)
     elif jet:
         post("You seem to be using the Jet colormap. Consider using Viridis "
-             "(new in matplotlib 2.0) "
+             "(new in #matplotlib 2.0) "
              "http://matplotlib.org/style_changes.html#colormap",
              reply=status)
 
