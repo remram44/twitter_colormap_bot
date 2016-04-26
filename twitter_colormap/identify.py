@@ -59,6 +59,9 @@ def identify_colormap(image):
     image_obj = image
     image = numpy.asarray(image_obj, dtype=numpy.uint8)
 
+    if image.shape[0] < 100 or image.shape[1] < 100:
+        return None
+
     # Turn image into a 2D array (1D list of RGB triples)
     sh = image.shape
     assert len(sh) == 3
@@ -71,6 +74,14 @@ def identify_colormap(image):
     histogram, _ = numpy.histogramdd(image, bins=edges)
     histogram /= image.shape[0]
 
+    # Test if it's a heatmap
+    max_bins = numpy.sort(histogram.flatten())[::-1]
+    if (max_bins > 0.005).sum() < 10:  # Less than 10 different colors
+        logger.info("Doesn't look like a heatmap -- %d colors",
+                    (max_bins > 0.005).sum())
+        return None
+
+    # Check for colormaps
     results = {}
     for name, testarray in TEST_ARRAYS.iteritems():
         results[name] = numpy.dot(testarray.flatten(), histogram.flatten())
