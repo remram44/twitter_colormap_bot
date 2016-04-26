@@ -62,4 +62,4 @@ def handle_status(status, images):
 
 def main():
     logging.basicConfig(level=logging.DEBUG)
-    get_twitter_statuses(handle_status, track=['python', 'matplotlib'])
+    get_twitter_statuses(handle_status, track=['python', 'matplotlib', 'dataviz'])
