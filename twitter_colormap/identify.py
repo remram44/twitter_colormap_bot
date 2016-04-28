@@ -42,15 +42,18 @@ def identify_colormap(image):
     # build kde estimate
     kde = KernelDensity(bandwidth=.1).fit(flat[indices])
     best_score = -numpy.inf
-    scores = []
-    for colormap in ['jet', 'viridis']:
-        score = kde.score(TEST_ARRAYS[colormap])
-        scores.append(score)
+    scores = {}
+    for colormap, array in TEST_ARRAYS.iteritems():
+        score = kde.score(array)
+        scores[colormap] = score
         if score > best_score:
             best_score = score
             best_colormap = colormap
-    print("%s : %f" % (best_colormap, best_score))
+    logger.info("Classification results: %s",
+                ", ".join("%s: %.2f" % (name, scores[name])
+                          for name in sorted(scores)))
     if best_score < -150:
         return None
     else:
+        logger.info("Classified as %s", best_colormap)
         return best_colormap
