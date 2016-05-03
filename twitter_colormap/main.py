@@ -35,13 +35,13 @@ def handle_status(status, images):
                 with open(fname, 'w') as fp:
                     fp.write(req.content)
             image = Image.open(StringIO(req.content))
-        except Exception as e:
+        except Exception:
             logger.exception("Exception retrieving image: %s", image_url)
             continue
 
         try:
             colormap = identify_colormap(image)
-        except Exception as e:
+        except Exception:
             logger.exception("Exception identifying image: %s", image_url)
             continue
 
@@ -50,14 +50,17 @@ def handle_status(status, images):
         elif colormap == JET:
             jet = True
 
-    if viridis:
-        post("A plot using the new Viridis colormap. Great!",
-             link=status)
-    elif jet:
-        post("You seem to be using the Jet colormap. Consider using Viridis "
-             "(new in #matplotlib 2.0) "
-             "http://matplotlib.org/style_changes.html#colormap",
-             reply=status)
+    try:
+        if viridis:
+            post("A plot using the new Viridis colormap. Great!",
+                 link=status)
+        elif jet:
+            post("You seem to be using the Jet colormap. Consider using "
+                 "Viridis (new in #matplotlib 2.0) "
+                 "http://matplotlib.org/style_changes.html#colormap",
+                 reply=status)
+    except Exception:
+        logger.exception("Exception posting to Twitter")
 
 
 def main():
