@@ -76,7 +76,7 @@ def identify_colormap(image):
 
     # Test if it's a heatmap
     max_bins = numpy.sort(histogram.flatten())[::-1]
-    if (max_bins > 0.005).sum() < 10:  # Less than 10 different colors
+    if (max_bins > 0.008).sum() < 10:  # Less than 10 different colors
         logger.info("Doesn't look like a heatmap -- %d colors",
                     (max_bins > 0.005).sum())
         return None
