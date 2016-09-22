@@ -63,6 +63,14 @@ def handle_status(status, images):
         logger.exception("Exception posting to Twitter")
 
 
+def handle_status_wrapper(*args, **kwargs):
+    try:
+        return handle_status(*args, **kwargs)
+    except Exception:
+        logger.exception("Uncaught exception")
+        raise
+
+
 def main():
     logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)-8s %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
-    get_twitter_statuses(handle_status, track=['python', 'matplotlib', 'dataviz', 'heatmap'])
+    get_twitter_statuses(handle_status_wrapper, track=['python', 'matplotlib', 'dataviz', 'heatmap'])
