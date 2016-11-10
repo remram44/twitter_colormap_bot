@@ -64,14 +64,15 @@ def identify_colormap(image):
 
     # Get 3D histogram
     # It gives the frequency of each color (RGB triple) in a bin
-    histogram, _ = numpy.histogramdd(image, bins=BINS, range=[(0, 256)] * 3)
+    histogram, _ = numpy.histogramdd(image, bins=16, range=[(0, 256)] * 3)
     histogram /= image.shape[0]
 
     # Test if it's a heatmap
     max_bins = numpy.sort(histogram.flatten())[::-1]
-    if (max_bins > 0.008).sum() < 10:  # Less than 10 different colors
-        logger.info("Doesn't look like a heatmap -- %d colors",
-                    (max_bins > 0.005).sum())
+    if (#(max_bins > 0.008).sum() < 10 or  # Less than 10 different colors
+            numpy.sum(max_bins[:6]) > 0.85):
+        logger.info("Doesn't look like a heatmap -- %d colors, sum = %.4f",
+                (max_bins > 0.005).sum(), numpy.sum(max_bins[:6]))
         return None
 
     # Check for colormaps
