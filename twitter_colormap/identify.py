@@ -15,14 +15,6 @@ VIRIDIS = 'viridis'
 JET = 'jet'
 
 
-# Construct the bins
-edges = numpy.repeat(
-    (numpy.arange(BINS + 1, dtype=numpy.uint8) * 256 / BINS)
-        .reshape((1, BINS + 1)),
-    3,
-    axis=0)
-
-
 def test_array(colormap_name):
     colormap = matplotlib.cm.get_cmap(colormap_name)
 
@@ -30,7 +22,8 @@ def test_array(colormap_name):
     colors = colormap(numpy.arange(0.0, 1.0, 0.001))
     colors = (colors * 255.0).astype(numpy.uint8)
 
-    hist, _ = numpy.histogramdd(colors[:, :3], bins=edges, normed=False)
+    hist, _ = numpy.histogramdd(colors[:, :3], bins=BINS, range=[(0, 256)] * 3,
+                                normed=False)
 
     convo = numpy.ones((DISTANCE * 2,) * 3, dtype=numpy.int)
 
@@ -71,7 +64,7 @@ def identify_colormap(image):
 
     # Get 3D histogram
     # It gives the frequency of each color (RGB triple) in a bin
-    histogram, _ = numpy.histogramdd(image, bins=edges)
+    histogram, _ = numpy.histogramdd(image, bins=BINS, range=[(0, 256)] * 3)
     histogram /= image.shape[0]
 
     # Test if it's a heatmap
