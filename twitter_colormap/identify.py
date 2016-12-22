@@ -4,7 +4,7 @@ import logging
 import scipy.ndimage
 
 
-BINS = 64
+BINS = 16
 DISTANCE = 4
 
 
@@ -64,7 +64,7 @@ def identify_colormap(image):
 
     # Get 3D histogram
     # It gives the frequency of each color (RGB triple) in a bin
-    histogram, _ = numpy.histogramdd(image, bins=16, range=[(0, 256)] * 3)
+    histogram, _ = numpy.histogramdd(image, bins=BINS, range=[(0, 256)] * 3)
     histogram /= image.shape[0]
 
     # Test if it's a heatmap
