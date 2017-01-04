@@ -28,9 +28,10 @@ def handle_status(status, images):
                     ext = 'jpg'
                 else:
                     ext = 'png'
-                fname = 'dumps/%s-%s.%s' % (
+                fname = 'dumps/%s-%s-%s.%s' % (
                     status.created_at.strftime('%Y%m%d_%H%M%S'),
                     status.author.screen_name,
+                    status.id,
                     ext)
                 with open(fname, 'w') as fp:
                     fp.write(req.content)
