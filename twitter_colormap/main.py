@@ -20,7 +20,7 @@ DUMP = False
 def handle_status(status, images):
     viridis = jet = False
 
-    for image_url in images:
+    for nb, image_url in enumerate(images):
         try:
             req = requests.get(image_url)
             if DUMP:
@@ -28,10 +28,11 @@ def handle_status(status, images):
                     ext = 'jpg'
                 else:
                     ext = 'png'
-                fname = 'dumps/%s-%s-%s.%s' % (
+                fname = 'dumps/%s-%s-%s%s.%s' % (
                     status.created_at.strftime('%Y%m%d_%H%M%S'),
                     status.author.screen_name,
                     status.id,
+                    '' if nb == 0 else ('-%02d' % nb),
                     ext)
                 with open(fname, 'w') as fp:
                     fp.write(req.content)
