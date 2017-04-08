@@ -47,9 +47,9 @@ TEST_ARRAYS = {
     JET: test_array('jet'),
 }
 
-
-def identify_colormap(image):
-    image_obj = image
+def identify_colormap(image_obj):
+    if image_obj.mode not in ('RGB', 'RGBA'):
+        image_obj = image_obj.convert('RGBA')
     image = numpy.asarray(image_obj, dtype=numpy.uint8)
 
     if image.shape[0] < 100 or image.shape[1] < 100:
